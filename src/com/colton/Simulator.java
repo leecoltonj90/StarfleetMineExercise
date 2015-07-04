@@ -203,7 +203,7 @@ public class Simulator {
     protected void parseCommand(String line, boolean dryRun) throws IOException {
         boolean hasMoved = false;
         boolean hasFired = false;
-        for (String instruction : line.split("\\s+")) {
+        for (String instruction : line.trim().split("\\s+")) {
             if (Constants.DIRECTION_LIST.contains(instruction) && !hasMoved) {
                 hasMoved = true;
                 if (!dryRun) {
@@ -214,6 +214,8 @@ public class Simulator {
                 if (!dryRun) {
                     fireVolley(instruction);
                 }
+            } else if(instruction.isEmpty()) {
+                //do nothing
             } else {
                 throw new IOException("Improper Instruction '" + instruction + "'");
             }
