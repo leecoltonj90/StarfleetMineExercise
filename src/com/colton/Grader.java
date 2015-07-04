@@ -10,20 +10,6 @@ public class Grader {
     private Grader() {}
 
     /**
-     * Determine if there are any mines that haven't been destroyed
-     * @param mines the list of mines to process
-     * @return true if all the mines have been destroyed, false otherwise
-     */
-    public static boolean areAllMinesDestroyed(List<Mine> mines) {
-        for (Mine mine : mines) {
-            if (mine.didMineExplode()) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
      * Determine if there are any commands that have yet to be run
      * @param commands the list of commands loaded from the script file
      * @param commandIndex the current command that is in focus
