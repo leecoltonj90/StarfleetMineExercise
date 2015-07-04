@@ -1,6 +1,7 @@
 package com.colton;
 
 import java.io.File;
+import java.io.IOException;
 
 public class Main {
     private static final Simulator simulation = new Simulator();
@@ -60,6 +61,9 @@ public class Main {
                     break;
                 }
             }
+        } catch (IOException ioe) {
+            System.err.println("IOException caught. Exiting... " + ioe.getMessage());
+            System.exit(2);
         } catch (Exception e) {
             // this is where any exception is caught due to a malformed input
             System.err.println("Exception caught. Exiting... " + e.getMessage());
