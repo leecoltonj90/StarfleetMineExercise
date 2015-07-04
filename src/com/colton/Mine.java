@@ -21,9 +21,9 @@ public class Mine extends Node {
         int distance = 0;
         if(Character.isAlphabetic(zIndex)) {
             if(zIndex >= 97) { //lowercase
-                distance = zIndex - 96; // ascii(a == 97); sim(a == 0)
+                distance = zIndex - 96; // ascii(a == 97); sim(a == 1)
             } else { //uppercase
-                distance = zIndex - (64 - 27); // ascii(A == 65); sim(A == 27)
+                distance = zIndex - (64 - 26); // ascii(A == 65); sim(A == 27)
             }
         } else {
             distance = -1;
@@ -41,11 +41,12 @@ public class Mine extends Node {
         }else if (m_distance < 27) { //lowercase
             return (char) (m_distance + 96);
         } else  { //uppercase
-            return (char) (m_distance - 27 + 64);
+            return (char) (m_distance - 26 + 64);
         }
     }
 
     public boolean isAlive() {
+
         if (m_isAlive) {
             return Boolean.TRUE;
         } else {
