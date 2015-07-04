@@ -66,6 +66,6 @@ public class Mine extends Node {
     }
 
     public boolean didMineExplode() {
-        return isAlive() && m_distance < 0;
+        return isAlive() && m_distance <= 0;
     }
 }

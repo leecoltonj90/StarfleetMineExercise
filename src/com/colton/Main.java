@@ -56,7 +56,7 @@ public class Main {
                 // increment step counter and check for exit conditions
                 stepCount++;
                 //terminal cases: no remaining mines, pass or explode a mine, no more commands to execute
-                if (!simulation.checkForLiveMines() || !simulation.checkForMineExplosion() || simulation.getCommandsRemaining(stepCount) == 0) {
+                if (!simulation.checkForLiveMines() || simulation.checkForMineExplosion() || simulation.getCommandsRemaining(stepCount) == 0) {
                     break;
                 }
             }

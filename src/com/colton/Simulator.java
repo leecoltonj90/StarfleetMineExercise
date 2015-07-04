@@ -23,7 +23,7 @@ public class Simulator {
     public void giveResultsOfGrader(int stepCount) {
         String passOrFail;
         int grade = 0;
-        if (Grader.areAllMinesDestroyed(m_mineList)) {
+        if (!checkForLiveMines()) {
             // all mines are destroyed. we passed.
             passOrFail = "pass";
 
@@ -298,10 +298,10 @@ public class Simulator {
     public boolean checkForMineExplosion() {
         for (Mine mine : m_mineList) {
             if (mine.didMineExplode()) {
-                return false;
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
     public boolean checkForLiveMines() {
