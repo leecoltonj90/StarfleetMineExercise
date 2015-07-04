@@ -38,7 +38,6 @@ public class Simulator {
         }
 
         System.out.println(passOrFail + " (" + grade + ")");
-        System.out.println();
     }
 
     /**
