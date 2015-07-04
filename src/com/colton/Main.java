@@ -71,7 +71,7 @@ public class Main {
         }
 
         // give results of Grader
-        simulation.giveResultsOfGrader(stepCount);
+        simulation.determineResults(stepCount);
 
         // exit
         System.exit(0);

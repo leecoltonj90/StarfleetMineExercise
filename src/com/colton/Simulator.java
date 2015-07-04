@@ -20,7 +20,11 @@ public class Simulator {
     public Simulator() {
     }
 
-    public void giveResultsOfGrader(int stepCount) {
+    /**
+     * Score the results of the simulation after processing the loaded script file.
+     * @param stepCount the number of instructions that were executed
+     */
+    public void determineResults(int stepCount) {
         String passOrFail;
         int grade = 0;
         if (!checkForLiveMines()) {
@@ -50,7 +54,7 @@ public class Simulator {
     }
 
     /**
-     * Chantges the ships coordinate value
+     * Changes the ships coordinate value
      * @param direction the direction in which to move the ship
      */
     private void moveShip(String direction) {
@@ -246,7 +250,11 @@ public class Simulator {
         m_mineList.stream().filter(Mine::isAlive).forEach(Mine::survivedWave);
     }
 
-    public void drawTerminal(boolean showShip) {
+    /**
+     * Draw the current grid based on each live mines position relative to the ship, the ships location being the center point of the drawn grid
+     * @param debugShip debug option to display the ships current location as an '$' if true, false to display as the expected '.'
+     */
+    public void drawTerminal(boolean debugShip) {
         // determine the size of a quadrant by getting the maximum delta X and Y distances
         int maxDeltaX = 0;
         int maxDeltaY = 0;
@@ -279,7 +287,7 @@ public class Simulator {
                 if (!mineFound) {
                     // check for ship for debug purposes only
                     boolean hasPrintedShip = false;
-                    if (showShip) {
+                    if (debugShip) {
                         if (((int)m_ship.getX()) == currentXCoord && ((int)m_ship.getY()) == currentYCoord) {
                             System.out.print("$");
                             hasPrintedShip = true;
@@ -297,6 +305,10 @@ public class Simulator {
         System.out.println();
     }
 
+    /**
+     * Parse the current list of live mines to see if the ship has sunk passed a mine of the z-axis
+     * @return true if there is an unexploded mine above the ship, false if otherwise
+     */
     public boolean checkForMineExplosion() {
         for (Mine mine : m_mineList) {
             if (mine.didMineExplode()) {
@@ -306,6 +318,10 @@ public class Simulator {
         return false;
     }
 
+    /**
+     * Parse the list of mines looking for any mines that have yet to be hit with a missle volley
+     * @return true if there is at least 1 unexploded mine, false if no live mines have been found
+     */
     public boolean checkForLiveMines() {
         for(Mine mine : m_mineList) {
             if(mine.isAlive()) {
@@ -315,6 +331,11 @@ public class Simulator {
         return false;
     }
 
+    /**
+     * Determine the number of command lines have yet to be executed by the simulation
+     * @param currentCommandIndex the index of the current instruction being processed from the script file
+     * @return the offset of the number of commands executed vs the commands yet to be run
+     */
     public int getCommandsRemaining(int currentCommandIndex) {
         return m_instructionList.size() - currentCommandIndex;
     }
