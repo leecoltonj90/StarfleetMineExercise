@@ -16,15 +16,17 @@ public class Simulator {
     Point m_ship;
     int moveCount = 0;
     int volleyCount = 0;
+    int instructionCount = 0;
+    boolean isComplete = false;
 
     public Simulator() {
     }
 
     /**
      * Score the results of the simulation after processing the loaded script file.
-     * @param stepCount the number of instructions that were executed
      */
-    public void determineResults(int stepCount) {
+    public void determineResults() {
+        int stepCount = instructionCount;
         String passOrFail;
         int grade = 0;
         if (!checkForLiveMines()) {
@@ -253,7 +255,7 @@ public class Simulator {
      * Draw the current grid based on each live mines position relative to the ship, the ships location being the center point of the drawn grid
      * @param debugShip debug option to display the ships current location as an '$' if true, false to display as the expected '.'
      */
-    public void drawTerminal(boolean debugShip) {
+    public List<String> drawTerminal(boolean debugShip) {
         // determine the size of a quadrant by getting the maximum delta X and Y distances
         int maxDeltaX = 0;
         int maxDeltaY = 0;
@@ -270,15 +272,17 @@ public class Simulator {
             }
         }
 
+        List<String> displayGraph = new LinkedList<>();
         // draw the grid
         for (int currentYCoord = ((int)m_ship.getY()) - maxDeltaY; currentYCoord <= ((int)m_ship.getY()) + maxDeltaY; currentYCoord++) {
+            String currentRow = "";
             for (int currentXCoord = ((int)m_ship.getX()) - maxDeltaX; currentXCoord <= ((int)m_ship.getX()) + maxDeltaX; currentXCoord++) {
                 // determine if we're drawing a mine or a blank space (don't draw ship)
                 boolean mineFound = false;
                 for (Mine mine : m_mineList) {
                     if ((int)mine.getLocation().getX() == currentXCoord && ((int)mine.getLocation().getY()) == currentYCoord && mine.isAlive()) {
                         // we should display the mine's value
-                        System.out.print(mine.getDisplayDistance());
+                        currentRow += mine.getDisplayDistance();
                         mineFound = true;
                         break;
                     }
@@ -288,20 +292,20 @@ public class Simulator {
                     boolean hasPrintedShip = false;
                     if (debugShip) {
                         if (((int)m_ship.getX()) == currentXCoord && ((int)m_ship.getY()) == currentYCoord) {
-                            System.out.print("$");
+                            currentRow += "$";
                             hasPrintedShip = true;
                         }
                     }
 
                     // print a blank space
                     if (! hasPrintedShip) {
-                        System.out.print('.');
+                        currentRow += ".";
                     }
                 }
             }
-            System.out.println();
+            displayGraph.add(currentRow);
         }
-        System.out.println();
+        return displayGraph;
     }
 
     /**
@@ -337,5 +341,40 @@ public class Simulator {
      */
     public int getCommandsRemaining(int currentCommandIndex) {
         return m_instructionList.size() - currentCommandIndex;
+    }
+
+    public List<String> displayAndExecuteTurn(boolean debugShip) throws Exception {
+        List<String> display = new LinkedList<>();
+        display.add("Step " + (instructionCount + 1));
+        display.add("");
+
+        // display map
+        drawTerminal(debugShip).stream().forEach(display::add);
+
+        display.add("");
+
+        //TODO is this unneeded?
+        // verify map is playable - exit early if not playable
+        if (! isMapValid()) {
+            throw new Exception("The map was not valid.");
+        }
+
+        // execute command
+        executeTurn(instructionCount);
+
+        // decrement any remaining mines' TTL
+        decremementTimes();
+
+        // display new map
+        drawTerminal(debugShip).stream().forEach(display::add);
+
+        // increment step counter and check for exit conditions
+        instructionCount++;
+        //terminal cases: no remaining mines, pass or explode a mine, no more commands to execute
+        if (!checkForLiveMines() || checkForMineExplosion() || getCommandsRemaining(instructionCount) == 0) {
+            isComplete = true;
+        }
+
+        return display;
     }
 }
