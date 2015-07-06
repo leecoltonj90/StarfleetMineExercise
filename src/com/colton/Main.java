@@ -42,7 +42,7 @@ public class Main {
         }
 
         // give results of Grader
-        simulation.determineResults();
+        System.out.println(simulation.determineResults());
 
         // exit
         System.exit(0);

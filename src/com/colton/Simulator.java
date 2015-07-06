@@ -25,8 +25,7 @@ public class Simulator {
     /**
      * Score the results of the simulation after processing the loaded script file.
      */
-    public void determineResults() {
-        int stepCount = instructionCount;
+    public String determineResults() {
         String passOrFail;
         int grade = 0;
         if (!checkForLiveMines()) {
@@ -34,24 +33,26 @@ public class Simulator {
             passOrFail = "pass";
 
             // now let's determine our score
-            grade = Grader.computeGrade(m_instructionList, m_mineList, moveCount, volleyCount, stepCount);
+            grade = Grader.computeGrade(m_instructionList, m_mineList, moveCount, volleyCount, instructionCount);
         } else {
             passOrFail = "fail";
         }
 
-        System.out.println(passOrFail + " (" + grade + ")");
+        return passOrFail + " (" + grade + ")";
     }
 
     /**
      * Execute a line from the script file, can contain a move and/or a firing instruction.
      */
-    public void executeTurn(int commandNumber) throws Exception {
+    public List<String> executeTurn(int commandNumber) throws Exception {
+        List<String> commandOutput = new LinkedList<>();
         String command = m_instructionList.get(commandNumber);
-        System.out.println(command);
-        System.out.println();
+        commandOutput.add(command);
+        commandOutput.add("");
         if(command != null && !command.trim().isEmpty()) {
             parseCommand(command, false);
         }
+        return commandOutput;
     }
 
     /**
@@ -344,7 +345,7 @@ public class Simulator {
         display.add("");
 
         // execute command
-        executeTurn(instructionCount);
+        executeTurn(instructionCount).stream().forEach(display::add);
 
         // decrement any remaining mines' TTL
         decremementTimes();
