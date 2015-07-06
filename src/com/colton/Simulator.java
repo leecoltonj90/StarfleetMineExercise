@@ -343,6 +343,13 @@ public class Simulator {
         return m_instructionList.size() - currentCommandIndex;
     }
 
+    /**
+     * Main method for use in the simulation, generates the output to display including the step count, current graph,
+     * current loaded instruction from the script file, and the resulting graph after the instructions execution.
+     * @param debugShip true to display the ships current location as an '$', false to treat the ships location as an empty space in the graph
+     * @return a list of Strings that are intended to be displayed to the user for each turn.
+     * @throws Exception
+     */
     public List<String> displayAndExecuteTurn(boolean debugShip) throws Exception {
         List<String> display = new LinkedList<>();
         display.add("Step " + (instructionCount + 1));
