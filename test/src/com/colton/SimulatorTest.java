@@ -48,6 +48,32 @@ public class SimulatorTest {
         executeAndValidate(inputDir);
     }
 
+    @Test
+    public void testCaseChange() throws Exception {
+        //same as Ex2 with mine depth change
+        String inputDir = "CaseChange/";
+        executeAndValidate(inputDir);
+    }
+
+    @Test
+    public void testInefficientField() throws Exception {
+        String inputDir = "InefficientField/";
+        executeAndValidate(inputDir);
+    }
+
+    @Test
+    public void testLotsOfMines() throws Exception {
+        String inputDir = "LotsOfMines/";
+        executeAndValidate(inputDir);
+    }
+
+    @Test
+    public void testWhitespacing() throws Exception {
+        //same output as Ex2
+        String inputDir = "Whitespacing/";
+        executeAndValidate(inputDir);
+    }
+
     /**
      * Load and run the example simulations, expects the resource dir to contain field, script, and expected output files
      * with titles "field.txt", "script.txt", and "output.txt" respectively.

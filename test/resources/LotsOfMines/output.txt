@@ -1,0 +1,31 @@
+Step 1
+
+ZZZ
+ZZZ
+ZZZ
+
+alpha
+
+.Y.
+YYY
+.Y.
+
+Step 2
+
+.Y.
+YYY
+.Y.
+
+beta
+
+X
+
+Step 3
+
+X
+
+gamma
+
+.
+
+pass (75)
