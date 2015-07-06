@@ -228,23 +228,6 @@ public class Simulator {
     }
 
     /**
-     * Evaluates the current live mines' Z coordinate
-     * @return true upon a valid map (all alive mines' Z coordinate is a Counting number). false otherwise
-     */
-    public boolean isMapValid() {
-        for (Mine mine : m_mineList) {
-            if (mine.isAlive()) {
-                if (mine.getDistance() <= 0) {
-                    return false;
-                }
-            }
-        }
-
-        // no expired mines.
-        return true;
-    }
-
-    /**
      * Call this method after all commands have been executed to ensure the proper depth of the ship relative to the mines
      */
     public void decremementTimes() {
@@ -359,12 +342,6 @@ public class Simulator {
         drawTerminal(debugShip).stream().forEach(display::add);
 
         display.add("");
-
-        //TODO is this unneeded?
-        // verify map is playable - exit early if not playable
-        if (! isMapValid()) {
-            throw new Exception("The map was not valid.");
-        }
 
         // execute command
         executeTurn(instructionCount);
