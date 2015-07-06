@@ -358,6 +358,8 @@ public class Simulator {
         //terminal cases: no remaining mines, pass or explode a mine, no more commands to execute
         if (!checkForLiveMines() || checkForMineExplosion() || getCommandsRemaining(instructionCount) == 0) {
             isComplete = true;
+        } else {
+            display.add("");
         }
 
         return display;
@@ -387,6 +389,8 @@ public class Simulator {
             while(!isComplete) {
                 displayAndExecuteTurn(false).stream().forEach(outputList::add);
             }
+
+            outputList.add("");
 
             // give results of Grader
             outputList.add(determineResults());
