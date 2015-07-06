@@ -362,4 +362,38 @@ public class Simulator {
 
         return display;
     }
+
+    /**
+     * This is the main entry point into the simulator, load the given field file and process the
+     * instructions provided in the script file.
+     * @param field the String filename containing the expected grid and mines for the simulation
+     * @param script the String filename with the instructions for the simulation to process and grade
+     * @return the output of the simulation to print to the screen
+     * @throws Exception
+     */
+    public List<String> runSimulation(String field, String script) throws Exception {
+        //TODO convert this to using Streams instead of a list of Strings
+        List<String> outputList = new LinkedList<>();
+        try {
+            // read in field file, where it is also validated
+            // see Simulation
+            loadField(new File(field));
+
+            // read in command file, where it is also validated
+            // use same Simulation from above
+            loadInstructions(new File(script));
+
+            // game loop
+            while(!isComplete) {
+                displayAndExecuteTurn(false).stream().forEach(outputList::add);
+            }
+
+            // give results of Grader
+            outputList.add(determineResults());
+        } catch (IOException ioe) {
+            System.err.println("IOException caught. Exiting... " + ioe.getMessage());
+            System.exit(2);
+        }
+        return outputList;
+    }
 }

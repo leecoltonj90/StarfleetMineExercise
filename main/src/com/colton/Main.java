@@ -20,30 +20,14 @@ public class Main {
         }
 
         try {
-            // read in field file, where it is also validated
-            // see Simulation
-            simulation.loadField(new File(args[0]));
-
-            // read in command file, where it is also validated
-            // use same Simulation from above
-            simulation.loadInstructions(new File(args[1]));
-
-            // game loop
-            while(!simulation.isComplete) {
-                simulation.displayAndExecuteTurn(false).stream().forEach(System.out::println);
-            }
-        } catch (IOException ioe) {
-            System.err.println("IOException caught. Exiting... " + ioe.getMessage());
-            System.exit(2);
+            String fieldFilename = args[0];
+            String scriptFilename = args[1];
+            simulation.runSimulation(fieldFilename, scriptFilename).stream().forEach(System.out::println);
         } catch (Exception e) {
             // this is where any exception is caught due to a malformed input
             System.err.println("Exception caught. Exiting... " + e.getMessage());
             printUsageAndExit(args);
         }
-
-        // give results of Grader
-        System.out.println(simulation.determineResults());
-
         // exit
         System.exit(0);
     }
